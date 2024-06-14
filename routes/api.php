@@ -19,4 +19,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('file-upload', [MondayController::class, 'fileUpload']);
+Route::prefix('monday')->group(function () {
+    Route::prefix('create')->group(function () {
+        Route::post('group', [MondayController::class, 'createGroup']);
+        Route::post('board', [MondayController::class, 'createBoard']);
+    });
+    Route::post('file-upload', [MondayController::class, 'fileUpload']);
+
+});
+

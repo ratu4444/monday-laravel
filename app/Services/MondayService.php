@@ -2,16 +2,16 @@
 
 namespace App\Services;
 
-use App\Models\Board;
-use App\Models\Setting;
-use App\Models\Workflow;
-use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 
 class MondayService
 {
+    public static function guzzleClient()
+    {
+        return $client = new Client();
+    }
     public static function getBaseUrl(): string
     {
         return 'https://api.monday.com/v2/';
@@ -19,7 +19,7 @@ class MondayService
 
     public static function getHeaders(): array
     {
-        $monday_credentials = "Your Monday Credentials";
+        $monday_credentials = "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjM3MTE0NDU2NywiYWFpIjoxMSwidWlkIjo0MDYzNTU3MiwiaWFkIjoiMjAyNC0wNi0xMlQxMToxNDozOS41ODBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTU3OTgwNDcsInJnbiI6InVzZTEifQ.a8R2vlUYswuoDOeKt8_F82g9MI7_po9-m-uoJ99sJMk";
 
         return [
             'Content-Type'  => 'application/json',
@@ -27,7 +27,55 @@ class MondayService
             'Authorization' => $monday_credentials,
         ];
     }
+    public static function createBoard($board_name, $board_kind)
+    {
+        $api = MondayService::getBaseUrl();
+        $headers = MondayService::getHeaders();
 
+        $query = [
+            'query' => "
+                mutation {
+                    create_board (board_name: \"$board_name\", board_kind: $board_kind) {
+                        id
+                        name
+                    }
+                }
+            "
+        ];
+
+        $response = self::guzzleClient()->post($api, [
+            'headers' => $headers,
+            'json' => $query,
+        ]);
+        return json_decode($response->getBody(), true);
+    }
+
+
+    public static function createGroup($board_id, $group_name, $relative_to, $group_color, $position_relative_method)
+    {
+        $api = MondayService::getBaseUrl();
+        $headers = MondayService::getHeaders();
+        $query = [
+            'query' => "
+                mutation {
+                    create_group (
+                        board_id:   $board_id,
+                        group_name: \"$group_name\",
+                        relative_to: \"$relative_to\",
+                        group_color: \"$group_color\",
+                        position_relative_method: $position_relative_method
+                    ) {
+                        id
+                    }
+                }
+            "
+        ];
+        $response = self::guzzleClient()->post($api, [
+            'headers' => $headers,
+            'json' => $query,
+        ]);
+        return json_decode($response->getBody(), true);
+    }
     public static function createItem($group_id, $board_id,  $item_name, $column_values)
     {
         $api = MondayService::getBaseUrl();
@@ -38,7 +86,7 @@ class MondayService
         }";
         $body = ['query' => $query];
         $response = callExternalPostApi($api, $headers, $body);
-        $item_id = $response['Your required id'];
+        $item_id = $response['Your required item id'];
 
         return $item_id;
     }

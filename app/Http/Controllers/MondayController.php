@@ -2,14 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\History;
-use App\Services\DearService;
 use App\Services\MondayService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
+
 class MondayController extends Controller
 {
+    public static function createBoard(Request $request)
+    {
+        $board_name = $request->input('board_name');
+        $board_kind = $request->input('board_kind');
+
+        $board_data = MondayService::createBoard($board_name, $board_kind);
+        return formatApiResponse('200', 'Board created successfully!', $board_data);
+    }
+    public function createGroup(Request $request){
+
+        $board_id = $request->input('board_id');
+        $group_name = $request->input('group_name');
+        $relative_to = $request->input('relative_to');
+        $group_color = $request->input('group_color', '#ff642e');
+        $position_relative_method = $request->input('position_relative_method', 'before_at');
+
+        $group_data = MondayService::createGroup($board_id, $group_name, $relative_to, $group_color, $position_relative_method);
+
+        return formatApiResponse(200, 'Group created successfully!', $group_data);
+    }
+
     public function createItem($group_id, $board_id){
         $item_name = "Your Item Name";
         $column_values = "your Column Values";
