@@ -13,7 +13,7 @@ This repository helps you manage and automate Monday.com using Laravel. We conti
 
 ## Installation
 
-To get started, clone the repository and install the necessary dependencies:
+## To get started, clone the repository and install the necessary dependencies:
 
 ```bash
 git clone https://github.com/yourusername/monday-laravel.git
@@ -25,11 +25,11 @@ Copy the .env.example file to .env and fill in your environment variables:
 ```bash
 cp .env.example .env
 ```
-Generate an application key:
+## Generate an application key:
 ```bash
 php artisan key:generate
 ```
-Add your Monday.com API key to the .env file:
+## Add your Monday.com API key to the .env file:
 ```bash
 MONDAY_API_KEY=your_api_key_here
 ```
