@@ -64,7 +64,7 @@ $formatted_number = Monday::formatPhoneNumber($number)
 We welcome contributions! Please read our CONTRIBUTING.md file for guidelines on how to get involved.
 
 ## Contact
-If you have any questions or need further assistance, please open an issue or contact us at [imranhasanatul000@gmail.com].
+If you have any questions or need further assistance, please open an issue or contact us at imranhasanatul000@gmail.com.
 Feel free to modify this draft according to your specific needs.
 
 ## License
