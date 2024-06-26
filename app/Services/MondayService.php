@@ -232,4 +232,25 @@ class MondayService
             return formatApiResponse(500, $exception->getMessage());
         }
     }
+
+    public static function formatPhoneNumber($number): string
+    {
+        if ($number) {
+            $number = preg_replace('/\D/', '', $number). ' AU';
+
+//            if (preg_match('/^04\d{8}$/', $number)) {
+////                dd(preg_replace('/(\d{4})(\d{3})(\d{3})/', '$1 $2 $3', $number));
+//                return preg_replace('/(\d{4})(\d{3})(\d{3})/', '$1 $2 $3', $number);
+//            }
+
+//            if (preg_match('/^0[2378]\d{8}$/', $number)) {
+////                dd(preg_replace('/^(\d{2})(\d{4})(\d{4})$/', '($1) $2 $3', $number));
+//                return preg_replace('/^(\d{2})(\d{4})(\d{4})$/', '($1) $2 $3', $number);
+//            }
+
+            return $number;
+        } else{
+            return '';
+        }
+    }
 }

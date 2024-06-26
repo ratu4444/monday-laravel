@@ -57,4 +57,16 @@ class MondayController extends Controller
         return formatApiResponse(200, 'Upload file to update successfully', $response, );
     }
 
+    public function index(){
+         return view('index');
+    }
+
+    public function formatPhoneNumber(Request $request): array
+    {
+        $number = $request->input('number');
+        $formatted_phone_number = MondayService::formatPhoneNumber($number);
+
+        return formatApiResponse(200, 'Phone number formatted', $formatted_phone_number);
+    }
+
 }
